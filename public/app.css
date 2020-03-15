@@ -1,0 +1,15 @@
+.thumbnail-container .thumbnail {
+    height: 200px;
+}
+.product-image {
+    width: 100%;
+}
+
+#share-button { display: none; } 
+          
+/* Smartphone Portrait and Landscape */ 
+@media only screen 
+    and (min-device-width : 320px) 
+    and (max-device-width : 480px){ 
+    #share-button {display: inline;}
+}
