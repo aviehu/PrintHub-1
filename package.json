@@ -4,6 +4,7 @@
   "description": "This server will host open source 3D print models",
   "main": "index.js",
   "scripts": {
+    "start": "node ./",
     "lint": "eslint ./",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
