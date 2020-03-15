@@ -32,10 +32,9 @@ async function startServer() {
         const productId = req.params.productId;
         const query = `SELECT * FROM public.product WHERE public.product.id = $1`;
         const result = await client.query(query, [productId]);
-        console.log(res);
         const [product] = result.rows;
-
-        const app = new Vue({ data: { name: productId.name }, template: `<div>{{name}}</div>` });
+        console.log(product);
+        const app = new Vue({ data: product, template: `<div>{{name}}</div>` });
 
         const context = {
             title: `Product ID: ${product.name}`,
