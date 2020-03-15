@@ -35,7 +35,7 @@ async function startServer() {
         console.log(res);
         const [product] = result.rows;
 
-        const app = new Vue({ template: `<div></div>` });
+        const app = new Vue({ data: { name: productId.name }, template: `<div>{{name}}</div>` });
 
         const context = {
             title: `Product ID: ${product.name}`,
