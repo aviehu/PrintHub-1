@@ -18,12 +18,6 @@
     "url": "https://github.com/roeeyud/PrintHub/issues"
   },
   "homepage": "https://github.com/roeeyud/PrintHub#readme",
-  "devDependencies": {
-    "eslint": "^6.8.0",
-    "eslint-config-airbnb-base": "^14.1.0",
-    "eslint-plugin-import": "^2.20.1",
-    "eslint-plugin-node": "^11.0.0"
-  },
   "dependencies": {
     "express": "^4.17.1",
     "pg": "^7.18.2",
