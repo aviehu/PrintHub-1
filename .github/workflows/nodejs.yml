@@ -24,6 +24,6 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm run lint
+    - uses: hallee/eslint-action@1.0.1
       env:
         CI: true
