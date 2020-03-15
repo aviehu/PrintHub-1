@@ -2,30 +2,59 @@ const Vue = require('vue');
 const express = require('express');
 const vueServerRenderer = require('vue-server-renderer');
 const fs = require('fs');
+const { Client } = require('pg');
+const { DATABASE_URL, PORT = 3000 } = process.env;
 
-const PORT = process.env.PORT || 3000;
+function getClientConfiguration() {
+    if (DATABASE_URL) {
+        return {
+            connectionString: DATABASE_URL,
+        };
+    }
+
+    return {
+        user: 'postgres',
+        host: 'localhost',
+        database: 'postgres',
+        port: 5432,
+    };
+}
+const client = new Client(getClientConfiguration());
+client.connect();
+
 const app = express();
 const template = fs.readFileSync('./index.template.html', 'utf-8');
 
-const renderer = vueServerRenderer.createRenderer({ template });
-app.get('/product/:productId', (req, res) => {
-    const productId = req.params.productId
-    const app = new Vue({
-        template: `<div></div>`,
-    });
-    const context = {
-        title: `Product ID: ${productId}`,
-        productId: productId,
-    };
+async function startServer() {    
+    const renderer = vueServerRenderer.createRenderer({ template });
+    
+    async function handleProductRequest(req, res) {
+        const productId = req.params.productId;
+        const query = `SELECT * FROM public.product WHERE public.product.id = $1`;
+        const result = await client.query(query, [productId]);
+        console.log(res);
+        const [product] = result.rows;
 
-    renderer.renderToString(app, context, (err, html) => {
-        if (err) {
-            res.status(500).end('Internal Server Error');
-            throw err;
-        }
-        res.end(html);
-    });
+        const app = new Vue({ template: `<div></div>` });
+
+        const context = {
+            title: `Product ID: ${product.name}`,
+            productId: productId,
+        };
+    
+        renderer.renderToString(app, context, (err, html) => {
+            if (err) {
+                res.status(500).end('Internal Server Error');
+                throw err;
+            }
+            res.end(html);
+        });
+    }
+
+    app.get('/product/:productId', handleProductRequest);
+    
+    app.listen(PORT);
+}
+startServer().then(() => {
+    console.log(`Listening on port: ${PORT}`);
 });
-
-app.listen(PORT);
-console.log(`Listening on port: ${PORT}`);
