@@ -41,7 +41,7 @@ This server will host open source 3D print models
     ```
 11) add new product (run in postgres prompt):
     ```
-	$ INSERT INTO product(id, name) VALUES (123, 'product name')
+	$ INSERT INTO product(id, name, summary) VALUES (123, 'product name', 'product summary');
     ```
 12) cloning repo to wsl:
     ```
